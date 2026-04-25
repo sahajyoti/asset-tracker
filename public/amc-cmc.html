@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AM Medical Centre | AMC/CMC Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="logo-mark">
+          <img class="logo-image" src="/assets/logo.png" alt="AM Medical Centre logo" />
+        </div>
+        <div class="brand-copy">
+          <h1>AM MEDICAL CENTRE</h1>
+          <p>AMC/CMC Tracker</p>
+        </div>
+      </div>
+      <nav class="top-links" aria-label="Main navigation">
+        <a class="admin-link" href="/">Biomedical Assets</a>
+        <a class="admin-link" href="/amc-cmc">AMC/CMC Tracker</a>
+        <a class="admin-link" href="/admin">Admin Login</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="hero panel">
+        <p class="eyebrow">Maintenance Contract Monitoring</p>
+        <h2>Track AMC/CMC coverage from uploaded sheets</h2>
+        <p>
+          Monitor equipment type, company, model, location, contract period (from/to), and PM
+          frequency by year in one place.
+        </p>
+      </section>
+
+      <section class="panel stats-panel">
+        <article class="stat-card">
+          <h3>Total Tracker Rows</h3>
+          <p id="totalRows">0</p>
+        </article>
+        <article class="stat-card">
+          <h3>Total Sheets</h3>
+          <p id="totalSheets">0</p>
+        </article>
+        <article class="stat-card">
+          <h3>Last Updated</h3>
+          <p id="lastUpload">Not uploaded yet</p>
+        </article>
+      </section>
+
+      <section class="panel viewer-panel">
+        <div class="viewer-header">
+          <div>
+            <h2>AMC / CMC Tracker View</h2>
+            <p>Search contracts by equipment, company, location, period, or sheet.</p>
+          </div>
+          <div class="controls">
+            <input id="searchInput" type="text" placeholder="Search type, model, location, AMC/CMC..." />
+            <select id="sheetFilter">
+              <option value="">All Sheets</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-col="slNo">SL.NO.</th>
+                <th data-col="typeOfEquipment">TYPE OF EQUIPMENT</th>
+                <th data-col="equipmentCompany">EQUIPMENT COMPANY</th>
+                <th data-col="equipmentModNo">EQUIPMENT MOD NO.</th>
+                <th data-col="location">LOCATION</th>
+                <th data-col="amcCmc">AMC/CMC</th>
+                <th data-col="amcFrom">FROM</th>
+                <th data-col="amcTo">TO</th>
+                <th data-col="pmFreqYr">PM FREQ YR.</th>
+                <th data-col="sheet">Sheet</th>
+              </tr>
+            </thead>
+            <tbody id="trackerTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="trackerCards" class="asset-cards"></div>
+
+        <div class="pagination">
+          <button id="prevPage" type="button">Previous</button>
+          <p id="pageInfo">Page 1 of 1</p>
+          <button id="nextPage" type="button">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="amc-cmc.js"></script>
+  </body>
+</html>
