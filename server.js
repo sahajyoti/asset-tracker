@@ -8,8 +8,11 @@ const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const uploadDir = path.join(__dirname, "uploads");
-const savedUploadsDir = path.join(__dirname, "uploaded-files");
+const isVercel = Boolean(process.env.VERCEL);
+const uploadDir = isVercel ? path.join("/tmp", "uploads") : path.join(__dirname, "uploads");
+const savedUploadsDir = isVercel
+  ? path.join("/tmp", "uploaded-files")
+  : path.join(__dirname, "uploaded-files");
 const publicDir = path.join(__dirname, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
@@ -766,8 +769,12 @@ const startServer = async () => {
   });
 };
 
-startServer().catch((error) => {
-  // eslint-disable-next-line no-console
-  console.error("Failed to start server:", error);
-  process.exit(1);
-});
+if (require.main === module) {
+  startServer().catch((error) => {
+    // eslint-disable-next-line no-console
+    console.error("Failed to start server:", error);
+    process.exit(1);
+  });
+}
+
+module.exports = app;

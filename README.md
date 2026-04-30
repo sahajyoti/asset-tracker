@@ -37,6 +37,13 @@ Mobile-friendly admin panel and viewer for biomedical department assets.
 
 	http://localhost:3000
 
+## Deploy on Vercel
+
+- The app is configured for Vercel static hosting from `public/`.
+- Clean URLs like `/admin` and `/amc-cmc` rewrite to the matching HTML pages.
+- API requests are handled by the Vercel function in `api/[...all].js`.
+- Uploaded files use Vercel's temporary filesystem, so they are not durable across cold starts.
+
 ## Admin Access
 
 - Public user view: `http://localhost:3000`

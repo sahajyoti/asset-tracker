@@ -1,0 +1,13 @@
+{
+  "outputDirectory": "public",
+  "rewrites": [
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/amc-cmc",
+      "destination": "/amc-cmc.html"
+    }
+  ]
+}
