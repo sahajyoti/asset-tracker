@@ -40,7 +40,7 @@ Mobile-friendly admin panel and viewer for biomedical department assets.
 ## Deploy on Vercel
 
 This project needs a backend connection for the admin login, upload flow, and workbook parsing.
-The free hosting path is Vercel, which serves the public pages from `public/` and runs the backend through `api/[...all].js`.
+The free hosting path is Vercel, which routes all requests through `server.js` so Express can serve the public pages and backend together.
 
 Publish steps:
 
