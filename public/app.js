@@ -64,7 +64,13 @@ const readJsonResponse = async (response, fallbackMessage) => {
   try {
     return JSON.parse(text);
   } catch (error) {
-    throw new Error("Server returned invalid JSON. Please retry.");
+    const contentType = response.headers.get("content-type") || "unknown content type";
+    const statusInfo = `${response.status} ${response.statusText}`.trim();
+    const bodyPreview = text.length > 200 ? `${text.slice(0, 200)}...` : text;
+
+    throw new Error(
+      `Expected JSON but received ${contentType} from server (${statusInfo}). Response preview: ${bodyPreview}`
+    );
   }
 };
 

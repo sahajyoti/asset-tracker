@@ -39,10 +39,28 @@ Mobile-friendly admin panel and viewer for biomedical department assets.
 
 ## Deploy on Vercel
 
-- The app is configured for Vercel static hosting from `public/`.
-- Clean URLs like `/admin` and `/amc-cmc` rewrite to the matching HTML pages.
-- API requests are handled by the Vercel function in `api/[...all].js`.
-- Uploaded files use Vercel's temporary filesystem, so they are not durable across cold starts.
+This project needs a backend connection for the admin login, upload flow, and workbook parsing.
+The free hosting path is Vercel, which serves the public pages from `public/` and runs the backend through `api/[...all].js`.
+
+Publish steps:
+
+1. Push this repo to GitHub.
+2. Import the repo into Vercel.
+3. Keep the default build settings.
+4. Add an optional `ADMIN_PASSWORD` environment variable if you do not want to use the default password.
+5. Deploy.
+
+Routes that are included:
+
+- `/` for the Biomedical Assets viewer.
+- `/admin` for the Admin panel.
+- `/amc-cmc` for the AMC/CMC tracker.
+- `/api/*` for the backend endpoints used by all pages.
+
+Important free-hosting limitation:
+
+- Uploaded files and in-memory data are not durable on Vercel free hosting, so they can reset after redeploys or cold starts.
+- That means the site is suitable for demo use, but not for permanent storage unless you add external persistence.
 
 ## Admin Access
 
