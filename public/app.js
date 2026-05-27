@@ -121,18 +121,23 @@ const renderAssets = (assets) => {
 
     const card = document.createElement("article");
     card.className = "asset-card";
-    const titleValue = !isBlankCell(item.assetName)
-      ? item.assetName
-      : !isBlankCell(item.assetDescription)
-        ? item.assetDescription
+    const titleValue = !isBlankCell(item.assetDescription)
+      ? item.assetDescription
+      : !isBlankCell(item.assetName)
+        ? item.assetName
         : "Asset";
+    const secondaryValue =
+      !isBlankCell(item.assetDescription) && !isBlankCell(item.assetName)
+        ? item.assetName
+        : "";
     const cardDetails = ASSET_COLUMNS.filter((column) => state.visibleColumns.includes(column.key))
-      .filter((column) => column.key !== "assetName")
+      .filter((column) => column.key !== "assetName" && column.key !== "assetDescription")
       .filter((column) => !isBlankCell(item[column.key]))
       .map((column) => `<div><b>${column.label}:</b> ${item[column.key]}</div>`)
       .join("");
     card.innerHTML = `
       <strong>${titleValue}</strong>
+      ${secondaryValue ? `<div class="asset-card-subtitle">${secondaryValue}</div>` : ""}
       ${cardDetails}
       ${!isBlankCell(item.sheet) && state.visibleColumns.includes("sheet") ? `<span class="badge">Sheet: ${item.sheet}</span>` : ""}
     `;
