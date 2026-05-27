@@ -10,6 +10,12 @@ const uploadMessage = document.getElementById("uploadMessage");
 const logoutBtn = document.getElementById("logoutBtn");
 const uploadedFilesPanel = document.getElementById("uploadedFilesPanel");
 const uploadedFilesList = document.getElementById("uploadedFilesList");
+const VERCEL_UPLOAD_LIMIT_BYTES = 4.5 * 1024 * 1024;
+
+const formatTooLargeMessage = (file) => {
+  const fileSizeMb = (file.size / (1024 * 1024)).toFixed(1);
+  return `This workbook is ${fileSizeMb} MB, which is too large for Vercel's serverless upload limit of about 4.5 MB. Use a smaller workbook or move the upload backend to a non-serverless host.`;
+};
 
 const setMessage = (el, text, isError = false) => {
   el.textContent = text;
@@ -32,6 +38,12 @@ const fetchWithTimeout = async (url, options = {}, timeoutMs = 25000) => {
 
 const readJsonResponse = async (response, fallbackMessage) => {
   const text = await response.text();
+
+  if (response.status === 413) {
+    throw new Error(
+      "This workbook is too large for Vercel's serverless upload limit of about 4.5 MB. Use a smaller workbook or move the upload backend to a non-serverless host."
+    );
+  }
 
   if (!text) {
     throw new Error(fallbackMessage || "Empty response from server.");
@@ -136,9 +148,15 @@ uploadForm.addEventListener("submit", async (event) => {
     return;
   }
 
+  const selectedFile = excelFileInput.files[0];
+  if (selectedFile.size > VERCEL_UPLOAD_LIMIT_BYTES) {
+    setMessage(uploadMessage, formatTooLargeMessage(selectedFile), true);
+    return;
+  }
+
   const formData = new FormData();
   formData.append("uploadType", uploadType.value);
-  formData.append("excelFile", excelFileInput.files[0]);
+  formData.append("excelFile", selectedFile);
 
   setMessage(uploadMessage, "Uploading and parsing workbook...");
 

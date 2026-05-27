@@ -58,6 +58,12 @@ const fetchWithTimeout = async (url, options = {}, timeoutMs = 25000) => {
 const readJsonResponse = async (response, fallbackMessage) => {
   const text = await response.text();
 
+  if (response.status === 413) {
+    throw new Error(
+      "This request was rejected because the payload is too large for the current Vercel deployment. Use a smaller workbook or move the backend to a non-serverless host."
+    );
+  }
+
   if (!text) {
     throw new Error(fallbackMessage || "Empty response from server.");
   }
