@@ -15,6 +15,8 @@ const savedUploadsDir = isVercel
   : path.join(__dirname, "uploaded-files");
 const publicDir = path.join(__dirname, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
+const defaultAssetWorkbookPath = path.join(__dirname, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
+const defaultAmcWorkbookPath = path.join(__dirname, "AMC 25-26 biomedical. - Copy.xlsx");
 
 const upload = multer({
   dest: uploadDir,
@@ -63,6 +65,35 @@ const parseCookies = (cookieHeader = "") => {
   }
 
   return cookies;
+};
+
+const loadDefaultDataIfPresent = async () => {
+  const tryLoadWorkbook = async (filePath, parser, uploadType) => {
+    try {
+      await fs.access(filePath);
+    } catch (_error) {
+      // eslint-disable-next-line no-console
+      console.warn(`Default ${uploadType} file not found: ${path.basename(filePath)}`);
+      return;
+    }
+
+    const workbook = XLSX.readFile(filePath);
+    const sourceFileName = path.basename(filePath);
+
+    if (uploadType === "asset") {
+      const { parsedAssets, parsedSheets } = parser(workbook, sourceFileName);
+      state.assets = parsedAssets;
+      state.assetSheets = parsedSheets;
+      return;
+    }
+
+    const { parsedTrackers, parsedSheets } = parser(workbook, sourceFileName);
+    state.amcTrackers = parsedTrackers;
+    state.amcSheets = parsedSheets;
+  };
+
+  await tryLoadWorkbook(defaultAssetWorkbookPath, parseWorkbookAssets, "asset");
+  await tryLoadWorkbook(defaultAmcWorkbookPath, parseWorkbookAmcCmc, "amc-cmc");
 };
 
 const getAdminToken = (req) => {
@@ -769,6 +800,7 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   await fs.mkdir(uploadDir, { recursive: true });
   await fs.mkdir(savedUploadsDir, { recursive: true });
+  await loadDefaultDataIfPresent();
 
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
