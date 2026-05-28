@@ -17,8 +17,8 @@ const savedUploadsDir = isVercel
   : path.join(appRoot, "uploaded-files");
 const publicDir = path.join(appRoot, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
-const defaultAssetWorkbookPath = path.join(__dirname, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
-const defaultAmcWorkbookPath = path.join(__dirname, "AMC 25-26 biomedical. - Copy.xlsx");
+const defaultAssetWorkbookPath = path.join(appRoot, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
+const defaultAmcWorkbookPath = path.join(appRoot, "AMC 25-26 biomedical. - Copy.xlsx");
 
 const upload = multer({
   dest: uploadDir,
