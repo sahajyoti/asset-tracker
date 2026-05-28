@@ -37,6 +37,27 @@ Mobile-friendly admin panel and viewer for biomedical department assets.
 
 	http://localhost:3000
 
+## One-Click Local Launch
+
+Use these launcher files if you want to run without typing commands.
+
+### Linux
+
+1. Double-click [start-asset-tracker.sh](start-asset-tracker.sh).
+2. Choose "Run" if your file manager asks.
+3. A terminal opens, server starts, and browser opens automatically.
+
+### Windows
+
+1. Double-click [start-asset-tracker.bat](start-asset-tracker.bat).
+2. A command window opens, server starts, and browser opens automatically.
+
+Notes:
+
+- First run may take longer because dependencies are installed automatically.
+- Keep the terminal window open while using the app.
+- Stop the app with `Ctrl + C` in that terminal window.
+
 ## Deploy on Vercel
 
 This project needs a backend connection for the admin login, upload flow, and workbook parsing.
