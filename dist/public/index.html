@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AM Medical Centre | Biomedical Assets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script>
+      (function () {
+        try {
+          const storedTheme = localStorage.getItem("asset-tracker-theme");
+          if (storedTheme) {
+            document.documentElement.setAttribute("data-theme", storedTheme);
+          }
+        } catch (error) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="logo-mark">
+          <img class="logo-image" src="/assets/logo.png" alt="AM Medical Centre logo" />
+        </div>
+        <div class="brand-copy">
+          <h1>AM MEDICAL CENTRE</h1>
+          <p>Biomedical Asset Registry</p>
+        </div>
+      </div>
+      <nav class="top-links" aria-label="Main navigation">
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Toggle dark mode">
+          <span class="theme-toggle-icon" data-theme-icon>☾</span>
+        </button>
+        <a class="admin-link" href="/">Biomedical Assets</a>
+        <a class="admin-link" href="/amc-cmc">AMC/CMC Tracker</a>
+        <a class="admin-link" href="/admin">Admin Login</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="hero panel">
+        <p class="eyebrow">Professional Biomedical Asset Platform</p>
+        <h2>Trusted visibility for every critical medical device</h2>
+        <p>
+          View verified biomedical assets across all AM Medical Centre locations with smart sheet
+          filtering, fast search, and mobile-first browsing.
+        </p>
+      </section>
+
+      <section class="panel stats-panel">
+        <article class="stat-card">
+          <h3>Total Assets</h3>
+          <p id="totalAssets">0</p>
+        </article>
+        <article class="stat-card">
+          <h3>Total Sheets</h3>
+          <p id="totalSheets">0</p>
+        </article>
+        <article class="stat-card">
+          <h3>Last Updated</h3>
+          <p id="lastUpload">Not uploaded yet</p>
+        </article>
+      </section>
+
+      <section class="panel viewer-panel">
+        <div class="viewer-header">
+          <div>
+            <h2>Biomedical Asset Viewer</h2>
+            <p>Search and filter assets by department, description, serial, brand, or sheet.</p>
+          </div>
+          <div class="controls">
+            <input id="searchInput" type="text" placeholder="Search asset, serial, code, department..." />
+            <select id="sheetFilter">
+              <option value="">All Sheets</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th data-col="slNo">Sl.No</th>
+                <th data-col="floorWise">Floor wise</th>
+                <th data-col="dept">Dept</th>
+                <th data-col="assetDescription">Asset Description</th>
+                <th data-col="assetName">Asset Name</th>
+                <th data-col="serialNo">Serial No</th>
+                <th data-col="brand">Brand</th>
+                <th data-col="assetCode">ASSET CODE</th>
+                <th data-col="sheet">Sheet</th>
+              </tr>
+            </thead>
+            <tbody id="assetTableBody"></tbody>
+          </table>
+        </div>
+
+        <div id="assetCards" class="asset-cards"></div>
+
+        <div class="pagination">
+          <button id="prevPage" type="button">Previous</button>
+          <p id="pageInfo">Page 1 of 1</p>
+          <button id="nextPage" type="button">Next</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="theme.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

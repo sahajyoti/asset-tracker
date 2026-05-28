@@ -15,7 +15,7 @@ const uploadDir = isVercel ? path.join("/tmp", "uploads") : path.join(appRoot, "
 const savedUploadsDir = isVercel
   ? path.join("/tmp", "uploaded-files")
   : path.join(appRoot, "uploaded-files");
-const publicDir = path.join(__dirname, "public");
+const publicDir = path.join(appRoot, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const defaultAssetWorkbookPath = path.join(__dirname, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
 const defaultAmcWorkbookPath = path.join(__dirname, "AMC 25-26 biomedical. - Copy.xlsx");
@@ -43,6 +43,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(publicDir));
 app.use("/uploaded-files", express.static(savedUploadsDir));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(publicDir, "index.html"));
+});
 
 const state = {
   assets: [],
