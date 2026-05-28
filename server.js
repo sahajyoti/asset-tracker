@@ -3,16 +3,18 @@ const cors = require("cors");
 const multer = require("multer");
 const XLSX = require("xlsx");
 const fs = require("fs/promises");
+const { exec } = require("child_process");
 const path = require("path");
 const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const isVercel = Boolean(process.env.VERCEL);
-const uploadDir = isVercel ? path.join("/tmp", "uploads") : path.join(__dirname, "uploads");
+const appRoot = process.pkg ? path.dirname(process.execPath) : __dirname;
+const uploadDir = isVercel ? path.join("/tmp", "uploads") : path.join(appRoot, "uploads");
 const savedUploadsDir = isVercel
   ? path.join("/tmp", "uploaded-files")
-  : path.join(__dirname, "uploaded-files");
+  : path.join(appRoot, "uploaded-files");
 const publicDir = path.join(__dirname, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 const defaultAssetWorkbookPath = path.join(__dirname, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
@@ -66,6 +68,28 @@ const parseCookies = (cookieHeader = "") => {
 
   return cookies;
 };
+
+const openBrowser = (url) =>
+  new Promise((resolve, reject) => {
+    let command;
+
+    if (process.platform === "win32") {
+      command = `start "" "${url}"`;
+    } else if (process.platform === "darwin") {
+      command = `open "${url}"`;
+    } else {
+      command = `xdg-open "${url}"`;
+    }
+
+    exec(command, (error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      resolve();
+    });
+  });
 
 const loadDefaultDataIfPresent = async () => {
   const tryLoadWorkbook = async (filePath, parser, uploadType) => {
@@ -797,7 +821,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-const startServer = async () => {
+const startServer = async ({ openApp = false } = {}) => {
   await fs.mkdir(uploadDir, { recursive: true });
   await fs.mkdir(savedUploadsDir, { recursive: true });
   await loadDefaultDataIfPresent();
@@ -805,6 +829,13 @@ const startServer = async () => {
   app.listen(PORT, () => {
     // eslint-disable-next-line no-console
     console.log(`Asset Tracker running on http://localhost:${PORT}`);
+
+    if (openApp) {
+      openBrowser(`http://localhost:${PORT}`).catch((error) => {
+        // eslint-disable-next-line no-console
+        console.warn(`Unable to open browser automatically: ${error.message}`);
+      });
+    }
   });
 };
 
@@ -816,4 +847,7 @@ if (require.main === module) {
   });
 }
 
-module.exports = app;
+module.exports = {
+  app,
+  startServer,
+};

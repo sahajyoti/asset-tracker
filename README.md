@@ -49,8 +49,16 @@ Use these launcher files if you want to run without typing commands.
 
 ### Windows
 
-1. Double-click [start-asset-tracker.bat](start-asset-tracker.bat).
-2. A command window opens, server starts, and browser opens automatically.
+1. Build the desktop app once with `npm run build:windows`.
+2. Double-click [dist/start-asset-tracker.exe](dist/start-asset-tracker.exe).
+3. The app starts locally and opens the browser automatically.
+
+If you prefer the terminal version, you can still run the app directly:
+
+1. Open Command Prompt, PowerShell, or Windows Terminal in this folder.
+2. Run `npm install` the first time.
+3. Run `npm start`.
+4. Open `http://localhost:3000` in your browser.
 
 Notes:
 

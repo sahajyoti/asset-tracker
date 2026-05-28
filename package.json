@@ -5,6 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
+    "desktop": "node desktop-launcher.js",
+    "build:windows": "pkg desktop-launcher.js --targets node18-win-x64 --output dist/start-asset-tracker.exe",
     "dev": "node server.js",
     "test": "echo \"No tests configured\""
   },
@@ -25,5 +27,17 @@
     "express": "^5.2.1",
     "multer": "^2.1.1",
     "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "pkg": "^5.8.1"
+  },
+  "pkg": {
+    "assets": [
+      "public/**/*"
+    ],
+    "scripts": [
+      "server.js",
+      "desktop-launcher.js"
+    ]
   }
 }
