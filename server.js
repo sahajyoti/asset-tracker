@@ -3,6 +3,7 @@ const cors = require("cors");
 const multer = require("multer");
 const XLSX = require("xlsx");
 const fs = require("fs/promises");
+const fsSync = require("fs");
 const { exec } = require("child_process");
 const path = require("path");
 const crypto = require("crypto");
@@ -17,8 +18,23 @@ const savedUploadsDir = isVercel
   : path.join(appRoot, "uploaded-files");
 const publicDir = path.join(appRoot, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
-const defaultAssetWorkbookPath = path.join(appRoot, "ASSET CODE - AM MEDICAL CENTRE.xlsx");
-const defaultAmcWorkbookPath = path.join(appRoot, "AMC 25-26 biomedical. - Copy.xlsx");
+
+const resolveDefaultWorkbookPath = (fileName) => {
+  const candidates = [path.join(appRoot, fileName)];
+
+  const parentDir = path.dirname(appRoot);
+  if (parentDir && parentDir !== appRoot) {
+    candidates.push(path.join(parentDir, fileName));
+  }
+
+  return candidates.find((candidate) => {
+    try {
+      return fsSync.existsSync(candidate);
+    } catch (_error) {
+      return false;
+    }
+  }) || candidates[0];
+};
 
 const upload = multer({
   dest: uploadDir,
@@ -120,8 +136,16 @@ const loadDefaultDataIfPresent = async () => {
     state.amcSheets = parsedSheets;
   };
 
-  await tryLoadWorkbook(defaultAssetWorkbookPath, parseWorkbookAssets, "asset");
-  await tryLoadWorkbook(defaultAmcWorkbookPath, parseWorkbookAmcCmc, "amc-cmc");
+  await tryLoadWorkbook(
+    resolveDefaultWorkbookPath("ASSET CODE - AM MEDICAL CENTRE.xlsx"),
+    parseWorkbookAssets,
+    "asset"
+  );
+  await tryLoadWorkbook(
+    resolveDefaultWorkbookPath("AMC 25-26 biomedical. - Copy.xlsx"),
+    parseWorkbookAmcCmc,
+    "amc-cmc"
+  );
 };
 
 const getAdminToken = (req) => {
