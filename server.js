@@ -20,20 +20,22 @@ const publicDir = path.join(appRoot, "public");
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "admin123";
 
 const resolveDefaultWorkbookPath = (fileName) => {
-  const candidates = [path.join(appRoot, fileName)];
+  const candidates = [path.join(__dirname, fileName), path.join(appRoot, fileName)];
 
   const parentDir = path.dirname(appRoot);
   if (parentDir && parentDir !== appRoot) {
     candidates.push(path.join(parentDir, fileName));
   }
 
-  return candidates.find((candidate) => {
+  const uniqueCandidates = [...new Set(candidates)];
+
+  return uniqueCandidates.find((candidate) => {
     try {
       return fsSync.existsSync(candidate);
     } catch (_error) {
       return false;
     }
-  }) || candidates[0];
+  }) || uniqueCandidates[0];
 };
 
 const upload = multer({

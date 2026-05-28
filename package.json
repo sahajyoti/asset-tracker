@@ -35,6 +35,11 @@
     "scripts": [
       "server.js",
       "desktop-launcher.js"
+    ],
+    "assets": [
+      "ASSET CODE - AM MEDICAL CENTRE.xlsx",
+      "AMC 25-26 biomedical. - Copy.xlsx",
+      "Biomedical Fixed Assets Physical Verification Location Wise (Autosaved).xlsx"
     ]
   }
 }
